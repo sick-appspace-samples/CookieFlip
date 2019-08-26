@@ -12,8 +12,8 @@
         <meta key="tags">InspectorP,SIM4000,Image,Algorithm,Machine Learning</meta>
         <meta key="read-protected">false</meta>
         <meta key="copy-protected">false</meta>
-        <entry path="pages" default="Viewer.msdd">
-            <file type="application/zip">Viewer.msdd</file>
+        <entry path="pages" default="AppSpaceViewers-2.4.0.1.msdd">
+            <file type="application/zip">AppSpaceViewers-2.4.0.1.msdd</file>
         </entry>
         <entry path="resources">
             <file type="image">Test/mix_1.png</file>

@@ -26,7 +26,6 @@
   Tutorial "Algorithms - Machine Learning".
 
 ------------------------------------------------------------------------------]]
-
 --Start of Global Scope---------------------------------------------------------
 
 print('AppEngine Version: ' .. Engine.getVersion())
@@ -38,7 +37,6 @@ local CLASSIFIER_TYPE = 'SVM' -- Selecting "SVM", "kNN" or "Bayes"
 
 -- Creating viewer
 local viewer = View.create()
-viewer:setID('viewer2D')
 
 -- Setting up graphical overlay attributes
 local passDecoration = View.ShapeDecoration.create()
@@ -190,7 +188,7 @@ local function classify()
     for c = 1, #cookies do
       local box = cookies[c]:getBoundingBoxOriented(currentImage)
       local label = type(labels) == 'table' and labels[c] or labels
-      if label == 1 then
+      if label == 2 then
         viewer:addShape(box, passDecoration, nil, imageID)
       else
         viewer:addShape(box, failDecoration, nil, imageID)
