@@ -36,7 +36,7 @@ local DELAY = 1000 -- ms between visualization steps for demonstration purpose
 local CLASSIFIER_TYPE = 'SVM' -- Selecting "SVM", "kNN" or "Bayes"
 
 -- Creating viewer
-local viewer = View.create()
+local viewer = View.create('viewer2D1')
 
 -- Setting up graphical overlay attributes
 local passDecoration = View.ShapeDecoration.create()
