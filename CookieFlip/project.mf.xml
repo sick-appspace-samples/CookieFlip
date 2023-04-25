@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <manifest>
     <application name="CookieFlip">
         <crown name="CookieFlip">
@@ -7,24 +7,10 @@
         </crown>
         <meta key="author">AppSpace Sample</meta>
         <meta key="version">2.5.0</meta>
-        <meta key="licensed">false</meta>
         <meta key="priority">low</meta>
         <meta key="tags">InspectorP,SIM4000,Image,Algorithm,Machine Learning</meta>
         <meta key="read-protected">false</meta>
         <meta key="copy-protected">false</meta>
-        <entry path="pages" default="AppSpaceViewers-2.4.0.1.msdd">
-            <file type="application/zip">AppSpaceViewers-2.4.0.1.msdd</file>
-        </entry>
-        <entry path="resources">
-            <file type="image">Test/mix_1.png</file>
-            <file type="image">Test/mix_2.png</file>
-            <file type="image">Train/negatives_1.png</file>
-            <file type="image">Train/negatives_2.png</file>
-            <file type="image">Train/positives_1.png</file>
-            <file type="image">Train/positives_2.png</file>
-        </entry>
-        <entry path="scripts" default="CookieFlip.lua">
-            <file type="text/x-lua">CookieFlip.lua</file>
-        </entry>
+        <entry default="CookieFlip.lua" path="scripts"/>
     </application>
 </manifest>
