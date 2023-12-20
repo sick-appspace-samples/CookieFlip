@@ -36,23 +36,17 @@ local DELAY = 1000 -- ms between visualization steps for demonstration purpose
 local CLASSIFIER_TYPE = 'SVM' -- Selecting "SVM", "kNN" or "Bayes"
 
 -- Creating viewer
-local viewer = View.create('viewer2D1')
+local viewer = View.create()
 
 -- Setting up graphical overlay attributes
-local passDecoration = View.ShapeDecoration.create()
-passDecoration:setLineColor(0, 255, 0) -- Green
-passDecoration:setFillColor(0, 255, 0, 40) -- Green, transparent
-passDecoration:setLineWidth(10)
+local passDecoration = View.ShapeDecoration.create():setLineColor(0, 255, 0) -- Green
+passDecoration:setLineWidth(10):setFillColor(0, 255, 0, 40) -- Green, transparent
 
-local failDecoration = View.ShapeDecoration.create()
-failDecoration:setLineColor(255, 0, 0) -- Red
-failDecoration:setFillColor(255, 0, 0, 40) -- Red, transparent
-failDecoration:setLineWidth(10)
+local failDecoration = View.ShapeDecoration.create():setLineColor(255, 0, 0) -- Red
+failDecoration:setLineWidth(10):setFillColor(255, 0, 0, 40) -- Red, transparent
 
-local textDecoration = View.TextDecoration.create()
-textDecoration:setPosition(20, 100)
-textDecoration:setColor(0, 0, 255) -- Blue
-textDecoration:setSize(90)
+local textDecoration = View.TextDecoration.create():setPosition(20, 100)
+textDecoration:setSize(90):setColor(0, 0, 255) -- Blue
 
 -- Creating training DataSet
 local trainingData = MachineLearning.DataSet.create('CLASSIFICATION')
@@ -79,8 +73,10 @@ end
 
 --Start of Function and Event Scope---------------------------------------------
 
--- Finding objects (blobs)
---@detectCookies(img:Image)
+
+---Finding objects (blobs)
+---@param img Image
+---@return Image.PixelRegion[]
 local function detectCookies(img)
   -- Threshold image
   local imgThr = img:threshold(0, 110)
@@ -90,8 +86,10 @@ local function detectCookies(img)
   return cookies
 end
 
--- Extracting surface features
---@computeCookieFeatures(img:Image, cookies:Image.PixelRegion)
+---Extracting surface features
+---@param img Image
+---@param cookies Image.PixelRegion
+---@return Matrix
 local function computeCookieFeatures(img, cookies)
   -- Creating magnitude image once and for all
   local magIm = img:sobelMagnitude()
@@ -109,7 +107,8 @@ local function computeCookieFeatures(img, cookies)
   return features
 end
 
---@addTrainingSamples(img:Image, label:string)
+---@param img Image
+---@param label string
 local function addTrainingSamples(img, label)
   local cookies = detectCookies(img)
   if #cookies == 0 then
@@ -120,34 +119,33 @@ local function addTrainingSamples(img, label)
   trainingData:append(features, label)
 end
 
--- Creating training data
+---Creating training data
 local function createTrainingData()
   -- Negatives (not flipped)
   for i = 1, 2 do
     local img = Image.load('resources/Train/negatives_' .. tostring(i) .. '.png')
     addTrainingSamples(img, 1) -- 1 = not flipped
     viewer:clear()
-    local imageID = viewer:addImage(img)
-    viewer:addText('Train negatives', textDecoration, nil, imageID)
+    viewer:addImage(img)
+    viewer:addText('Train negatives', textDecoration)
     viewer:present()
     Script.sleep(DELAY)
   end
 
   -- Positives (flipped)
   for i = 1, 2 do
-    local img =
-      Image.load('resources/Train/positives_' .. tostring(i) .. '.png')
+    local img = Image.load('resources/Train/positives_' .. tostring(i) .. '.png')
     addTrainingSamples(img, 2) -- 2 = flipped
     viewer:clear()
-    local imageID = viewer:addImage(img)
-    viewer:addText('Train positives', textDecoration, nil, imageID)
+    viewer:addImage(img)
+    viewer:addText('Train positives', textDecoration)
     viewer:present()
     Script.sleep(DELAY)
   end
   print(trainingData:toString())
 end
 
--- Training classifier
+---Training classifier
 local function trainClassifier()
   local success = classifier:train(trainingData)
   if not success then
@@ -159,12 +157,12 @@ local function trainClassifier()
   print('Confusion matrix = \n' .. confusionMatrix:toString())
 end
 
--- Loading and classifying test images
+---Loading and classifying test images
 local function classify()
   for i = 1, 2 do
     local currentImage = Image.load('resources/Test/mix_' .. tostring(i) .. '.png')
     viewer:clear()
-    local imageID = viewer:addImage(currentImage)
+    viewer:addImage(currentImage)
 
     local tic = DateTime.getTimestamp()
     local cookies = detectCookies(currentImage)
@@ -189,13 +187,13 @@ local function classify()
       local box = cookies[c]:getBoundingBoxOriented(currentImage)
       local label = type(labels) == 'table' and labels[c] or labels
       if label == 2 then
-        viewer:addShape(box, passDecoration, nil, imageID)
+        viewer:addShape(box, passDecoration)
       else
-        viewer:addShape(box, failDecoration, nil, imageID)
+        viewer:addShape(box, failDecoration)
         failCount = failCount + 1
       end
     end
-    viewer:addText('Classify', textDecoration, nil, imageID)
+    viewer:addText('Classify', textDecoration)
     viewer:present()
     print(failCount .. ' out of ' .. #cookies .. ' cookies are flipped')
 
